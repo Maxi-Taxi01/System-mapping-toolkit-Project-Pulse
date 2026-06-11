@@ -62,6 +62,9 @@
   #explainPanel .sec{margin-bottom:10px}
   #explainPanel .sec b{display:block;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--coral);margin-bottom:2px}
   #explainPanel .sec p{font-size:.85rem;color:#333}
+  #explainPanel blockquote{font-size:.85rem;font-style:italic;color:#2a2a2a;background:#fff6f3;border-left:3px solid var(--coral);
+    padding:8px 12px;border-radius:0 8px 8px 0;margin:0 0 8px}
+  #explainPanel blockquote cite{display:block;font-style:normal;font-size:.74rem;color:var(--grey);margin-top:4px}
   #explainPanel .sluit{position:absolute;top:10px;right:12px;border:none;background:none;font-size:1.2rem;color:var(--grey);cursor:pointer}
   #explainHint{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:var(--navy);color:#fff;
     font-size:.82rem;padding:8px 18px;border-radius:99px;z-index:999;display:none;box-shadow:0 4px 14px rgba(20,30,70,.3)}
@@ -300,6 +303,7 @@
 <div id="explainPanel">
   <button class="sluit" aria-label="Sluiten">✕</button>
   <h4 id="epTitel"></h4>
+  <div class="sec"><b>Letterlijk citaat uit de bron</b><div id="epCitaten"></div></div>
   <div class="sec"><b>Waar komt dit vandaan?</b><p id="epBron"></p></div>
   <div class="sec"><b>Onderbouwing</b><p id="epOnderbouwing"></p></div>
   <div class="sec"><b>Hoe draagt dit bij?</b><p id="epBijdrage"></p></div>
@@ -400,48 +404,17 @@
     }
   };
 
-  function normaliseer(t){return (t||"").replace(/\s+/g," ").trim().toLowerCase();}
-
-  // koppel uitleg aan secties via kicker-/tag-tekst
-  document.querySelectorAll(".card").forEach(card=>{
-    const k = card.querySelector(".kicker, .tag");
-    let sleutel = k ? normaliseer(k.textContent) : null;
-    if(card.querySelector("svg")) sleutel = "systeemkaart";
-    if(sleutel && uitleg[sleutel]){ card.dataset.uitleg = sleutel; }
-  });
-  const tabel = document.querySelector("table");
-  if(tabel) tabel.dataset.uitleg = "loopregister";
-
-  const btn = document.getElementById("explainBtn");
-  const panel = document.getElementById("explainPanel");
-  const secties = document.querySelectorAll("[data-uitleg]");
-  let aan = false;
-
-  btn.addEventListener("click", ()=>{
-    aan = !aan;
-    document.body.classList.toggle("uitleg-modus", aan);
-    btn.classList.toggle("actief", aan);
-    btn.innerHTML = aan ? "✕ Uitleg-modus sluiten" : "💡 Onderbouwing";
-    secties.forEach(s=>s.classList.toggle("explainable", aan));
-    if(!aan) panel.classList.remove("open");
-  });
-
-  secties.forEach(s=>{
-    s.addEventListener("click", e=>{
-      if(!aan) return;
-      e.preventDefault();
-      const d = uitleg[s.dataset.uitleg];
-      if(!d) return;
-      document.getElementById("epTitel").textContent = d.titel;
-      document.getElementById("epBron").textContent = d.bron;
-      document.getElementById("epOnderbouwing").textContent = d.onderbouwing;
-      document.getElementById("epBijdrage").textContent = d.bijdrage;
-      panel.classList.add("open");
-    });
-  });
-
-  panel.querySelector(".sluit").addEventListener("click", ()=>panel.classList.remove("open"));
-})();
-</script>
-</body>
-</html>
+  const citaten = {
+    "het systeem & kernprobleem": [
+      {t:"De urgentie is duidelijk. De formele zorg loopt vast, het sociaal weefsel brokkelt af en maatschappelijke druk neemt toe.", b:"Project Pulse 31 okt — 'Waarom'"},
+      {t:"Het is veel zorg, weinig leven.", b:"Bert (84), persona — Project Pulse 12 Maa"}
+    ],
+    "onderzoeksvraag": [
+      {t:"Hoe kunnen we, door middel van een co-creatieve en ontwerpgerichte aanpak, samen met ouderen en jongeren een duurzaam programma ontwikkelen dat eenzaamheid vermindert, mentale veerkracht versterkt en de druk op de formele zorg verlicht door sociale verbinding en ondersteuning te bevorderen?", b:"Hoofdvraag — Project Pulse 12 Maa / 31 okt"}
+    ],
+    "hoofdvariabele": [
+      {t:"Pulse is ons antwoord op de groeiende afstand tussen generaties, tussen mens en systeem, tussen zorg en gemeenschap: een veerkrachtige samenleving.", b:"Project Pulse 12 Maa — inleiding"},
+      {t:"… een inclusieve en veerkrachtige samenleving waarin mensen elkaar ondersteunen – binnen én buiten de formele zorg.", b:"Project Pulse 12 Maa"}
+    ],
+    "eenzaamheid & mentaal welzijn": [
+      {t:"In een samenleving waarin mentale druk onder jongeren toeneemt en ouderen kampen met structurele eenzaamheid, zoeken we naar nieuwe manieren 
