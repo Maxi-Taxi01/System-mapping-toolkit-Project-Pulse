@@ -403,7 +403,6 @@
       bijdrage:"De hypothese maakt het hefboompunt toetsbaar: de kortetermijneffecten (zelfvertrouwen, deelname) zijn al in de eerste labs meetbaar, lang voordat het vertraagde zorgdruk-effect (R3) zichtbaar wordt."
     }
   };
-
   const citaten = {
     "het systeem & kernprobleem": [
       {t:"De urgentie is duidelijk. De formele zorg loopt vast, het sociaal weefsel brokkelt af en maatschappelijke druk neemt toe.", b:"Project Pulse 31 okt — 'Waarom'"},
@@ -417,4 +416,108 @@
       {t:"… een inclusieve en veerkrachtige samenleving waarin mensen elkaar ondersteunen – binnen én buiten de formele zorg.", b:"Project Pulse 12 Maa"}
     ],
     "eenzaamheid & mentaal welzijn": [
-      {t:"In een samenleving waarin mentale druk onder jongeren toeneemt en ouderen kampen met structurele eenzaamheid, zoeken we naar nieuwe manieren 
+      {t:"In een samenleving waarin mentale druk onder jongeren toeneemt en ouderen kampen met structurele eenzaamheid, zoeken we naar nieuwe manieren van samenleven.", b:"Project Pulse 12 Maa — inleiding"},
+      {t:"Veel jongeren ervaren eenzaamheid, prestatiedruk en mentale problemen door maatschappelijke verwachtingen, sociale media en onzekerheid over de toekomst.", b:"Project Pulse 12 Maa — doelgroepen"},
+      {t:"Iedereen zegt: ga praten. Maar met wie? En wat moet ik dan zeggen?", b:"Kelly (19), persona — Project Pulse 12 Maa"}
+    ],
+    "verbinding & intergenerationeel contact": [
+      {t:"In deze generatiemix ontstaan onverwachte gesprekken, duurzame relaties en nieuwe samenwerkingen.", b:"Project Pulse 12 Maa — verbindingen"},
+      {t:"Wat moet zo'n jong mens nou met mij? Maar wie weet. Misschien gebeurt er iets onverwachts.", b:"Bert (84), persona — Project Pulse 12 Maa"}
+    ],
+    "eigenaarschap, regie & creatief zelfvertrouwen": [
+      {t:"Door samen te ontwerpen, te experimenteren en te reflecteren ontstaat ruimte voor eigenaarschap: deelnemers worden medevormgevers van de zorg, van de ontmoeting én van de samenleving waarin ze willen leven.", b:"Project Pulse 12 Maa"},
+      {t:"Een belangrijk onderdeel hiervan is het ontwikkelen van 'creative confidence' (Kelley, Kelley 2012): het vertrouwen in je eigen creativiteit om het 'goede gesprek' op een vernieuwende manier vorm te geven en bij te dragen aan verandering.", b:"Project Pulse 12 Maa — aanpak"}
+    ],
+    "capaciteit & druk formele zorg": [
+      {t:"Haar rooster zit vol, collega's vallen uit, en er is nauwelijks ruimte voor wat haar ooit aantrok in de zorg: écht contact.", b:"Anne (40, verzorgende), persona — Project Pulse 12 Maa"},
+      {t:"Ik hou van dit werk, maar soms denk ik: is dit het nou? Ik geef alles — en toch voelt het leeg.", b:"Anne (40), persona — Project Pulse 12 Maa"}
+    ],
+    "informele zorg & kracht van de gemeenschap": [
+      {t:"We onderzoeken hoe we die creatieve kracht kunnen versterken binnen de informele zorg en het sociale domein.", b:"Project Pulse 12 Maa"},
+      {t:"… het sociaal weefsel brokkelt af en maatschappelijke druk neemt toe. Tegelijk zien we een verlangen naar verbinding, naar zingeving en naar het samen dragen van verantwoordelijkheid.", b:"Project Pulse 31 okt"}
+    ],
+    "governance, methode & middelen": [
+      {t:"We geloven in gedeeld eigenaarschap en co-financiering: samen investeren in beweging.", b:"Project Pulse 31 okt"},
+      {t:"Het project vormt bovendien een brug tussen sectoren als zorg, cultuur en onderwijs.", b:"Project Pulse 12 Maa — verbindingen"}
+    ],
+    "systeemkaart": [
+      {t:"Pulse brengt die beweging op gang – klein en lokaal, maar systemisch van aard.", b:"Project Pulse 31 okt"},
+      {t:"Door creativiteit en ontwerpdenken centraal te stellen, ontstaat ruimte voor systeemvernieuwing …", b:"Project Pulse 12 Maa — verbindingen"}
+    ],
+    "loopregister": [
+      {t:"Ons programma doorbreekt de negatieve spiraal van eenzaamheid en mentale druk … daarmee dragen we ook bij aan een inclusieve en veerkrachtige samenleving waarin mensen elkaar ondersteunen – binnen én buiten de formele zorg.", b:"Project Pulse 12 Maa — impact"}
+    ],
+    "belangrijkste inzichten": [
+      {t:"Met deze aanpak werken we aan een stad waarin jong en oud niet langs elkaar heen leven, maar elkaar versterken.", b:"Project Pulse 12 Maa"},
+      {t:"Maar de laatste tijd voelt ze zich steeds vaker op de automatische piloot.", b:"Persona Anne (40) — Project Pulse 12 Maa"}
+    ],
+    "kernsysteemverhaal": [
+      {t:"Ze vragen hoe het gaat. Maar ik weet niet of ze het antwoord echt willen horen.", b:"Bert (84), persona — Project Pulse 12 Maa"},
+      {t:"Misschien is het makkelijker om te praten als het ergens over gáát. Niet over mij, maar samen over iets maken.", b:"Kelly (19), persona — Project Pulse 12 Maa"}
+    ],
+    "systeemvisie": [
+      {t:"Niet als tijdelijke interventie, maar als een beweging waarin jong en oud elkaar opnieuw ontmoeten – en versterken.", b:"Project Pulse 12 Maa — inleiding"},
+      {t:"Jongeren en ouderen leren niet alleen van elkaar, maar hervinden ook hun eigen kracht en rol binnen een groter geheel.", b:"Project Pulse 31 okt"}
+    ],
+    "beoordeling: impact × haalbaarheid": [
+      {t:"Werk vanuit gedeeld eigenaarschap, gedeelde taal en gelijkwaardige samenwerking tussen jongeren …", b:"Onderzoeksdocument deelvraag 2 — aanbevelingen"},
+      {t:"Duidelijke en eerlijke regels vergroten voorspelbaarheid en veiligheid.", b:"Onderzoeksdocument deelvraag 1 — toezicht & regels"},
+      {t:"Misschien geeft het weer wat lucht. Of laat het me anders kijken. Als ik maar even niet hoef te rennen.", b:"Anne (40), persona — Project Pulse 12 Maa"}
+    ]
+  };
+
+  function normaliseer(t){return (t||"").replace(/\s+/g," ").trim().toLowerCase();}
+
+  // koppel uitleg aan secties via kicker-/tag-tekst
+  document.querySelectorAll(".card").forEach(card=>{
+    const k = card.querySelector(".kicker, .tag");
+    let sleutel = k ? normaliseer(k.textContent) : null;
+    if(card.querySelector("svg")) sleutel = "systeemkaart";
+    if(sleutel && uitleg[sleutel]){ card.dataset.uitleg = sleutel; }
+  });
+  const tabel = document.querySelector("table");
+  if(tabel) tabel.dataset.uitleg = "loopregister";
+
+  const btn = document.getElementById("explainBtn");
+  const panel = document.getElementById("explainPanel");
+  const secties = document.querySelectorAll("[data-uitleg]");
+  let aan = false;
+
+  btn.addEventListener("click", ()=>{
+    aan = !aan;
+    document.body.classList.toggle("uitleg-modus", aan);
+    btn.classList.toggle("actief", aan);
+    btn.innerHTML = aan ? "✕ Uitleg-modus sluiten" : "💡 Onderbouwing";
+    secties.forEach(s=>s.classList.toggle("explainable", aan));
+    if(!aan) panel.classList.remove("open");
+  });
+
+  secties.forEach(s=>{
+    s.addEventListener("click", e=>{
+      if(!aan) return;
+      e.preventDefault();
+      const d = uitleg[s.dataset.uitleg];
+      if(!d) return;
+      document.getElementById("epTitel").textContent = d.titel;
+      const cw = document.getElementById("epCitaten");
+      cw.innerHTML = "";
+      (citaten[s.dataset.uitleg] || []).forEach(c=>{
+        const bq = document.createElement("blockquote");
+        bq.textContent = "“" + c.t + "”";
+        const ci = document.createElement("cite");
+        ci.textContent = "— " + c.b;
+        bq.appendChild(ci);
+        cw.appendChild(bq);
+      });
+      document.getElementById("epBron").textContent = d.bron;
+      document.getElementById("epOnderbouwing").textContent = d.onderbouwing;
+      document.getElementById("epBijdrage").textContent = d.bijdrage;
+      panel.classList.add("open");
+    });
+  });
+
+  panel.querySelector(".sluit").addEventListener("click", ()=>panel.classList.remove("open"));
+})();
+</script>
+</body>
+</html>
