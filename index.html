@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Versie 2 · Overzicht — Pulse · Samenhang informele &amp; formele zorg</title>
+<style>
+  :root{
+    --navy:#354171; --coral:#f57562; --ink:#1a1a1a; --grey:#6b7280;
+    --purple:#dedaff; --yellow:#fff6b6; --green:#adf0c7; --pink:#ffc6c6; --blue:#c6dcff; --orange:#f8d3af;
+    --card:#ffffff; --bg:#f6f7fb;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+  .wrap{max-width:1150px;margin:0 auto;padding:32px 24px 64px}
+  header.hero{background:var(--navy);color:#fff;border-radius:16px;padding:36px 40px;margin-bottom:28px}
+  header.hero h1{font-size:1.9rem;margin-bottom:6px}
+  header.hero p{color:#cdd5ee;font-size:.98rem}
+  header.hero .badge{display:inline-block;background:var(--coral);color:#fff;font-weight:700;font-size:.8rem;letter-spacing:.08em;padding:4px 12px;border-radius:99px;margin-bottom:14px}
+  h2{color:var(--navy);font-size:1.25rem;margin:34px 0 14px;display:flex;align-items:center;gap:10px}
+  h2 .num{background:var(--coral);color:#fff;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.95rem;flex:none}
+  .grid{display:grid;gap:14px}
+  .grid.c2{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  .grid.c3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .card{background:var(--card);border:1px solid #e5e7f0;border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(20,30,70,.06)}
+  .card h3{font-size:1rem;color:var(--navy);margin-bottom:8px}
+  .card p,.card li{font-size:.9rem;color:#333}
+  .card ul{padding-left:18px;margin-top:4px}
+  .card li{margin-bottom:4px}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 10px;border-radius:99px;margin:0 6px 6px 0}
+  .pillrow{margin-top:6px}
+  .accent{border-top:4px solid var(--coral)}
+  .kicker{font-size:.78rem;font-weight:700;letter-spacing:.06em;color:var(--coral);text-transform:uppercase;margin-bottom:4px}
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(20,30,70,.06);font-size:.9rem}
+  th{background:var(--navy);color:#fff;text-align:left;padding:10px 14px;font-size:.85rem}
+  td{padding:10px 14px;border-top:1px solid #eef0f6;vertical-align:top}
+  .loopR{color:#0a7a36;font-weight:700}.loopB{color:#1d5fbf;font-weight:700}
+  .legend{font-size:.82rem;color:var(--grey);margin-top:10px}
+  .matrix{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .matrix .cell{border-radius:10px;padding:12px 14px;font-size:.85rem}
+  .matrix .hi-hi{background:#e3f7ea;border:1px solid #9adcb4}
+  .matrix .hi-lo{background:#fdeceb;border:1px solid #f3b6b0}
+  .matrix .lo-hi{background:#fff8dd;border:1px solid #ecd98a}
+  .matrix .lo-lo{background:#f1f2f6;border:1px solid #d8dbe6}
+  .matrix b{display:block;margin-bottom:4px;font-size:.8rem}
+  svg text{font-family:'Segoe UI',system-ui,sans-serif}
+  footer{margin-top:40px;font-size:.78rem;color:var(--grey);border-top:1px solid #e2e5ef;padding-top:14px}
+  a{color:var(--navy)}
+  /* ---- Uitleg-modus ---- */
+  #explainBtn{position:fixed;right:22px;bottom:22px;z-index:1000;background:var(--navy);color:#fff;border:none;
+    border-radius:99px;padding:13px 20px;font-size:.9rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(20,30,70,.35);
+    display:flex;align-items:center;gap:8px;transition:background .2s}
+  #explainBtn:hover{background:#46548f}
+  #explainBtn.actief{background:var(--coral)}
+  body.uitleg-modus .explainable{cursor:help;outline:2px dashed var(--coral);outline-offset:3px;border-radius:12px;transition:outline-color .15s}
+  body.uitleg-modus .explainable:hover{outline-style:solid;background:#fff8f4}
+  #explainPanel{position:fixed;right:22px;bottom:84px;width:min(420px,calc(100vw - 44px));max-height:70vh;overflow-y:auto;
+    background:#fff;border:1px solid #e2e5ef;border-top:5px solid var(--coral);border-radius:14px;
+    box-shadow:0 10px 34px rgba(20,30,70,.28);padding:20px 22px;z-index:1001;display:none}
+  #explainPanel.open{display:block}
+  #explainPanel h4{color:var(--navy);font-size:1rem;margin-bottom:10px;padding-right:28px}
+  #explainPanel .sec{margin-bottom:10px}
+  #explainPanel .sec b{display:block;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--coral);margin-bottom:2px}
+  #explainPanel .sec p{font-size:.85rem;color:#333}
+  #explainPanel .sluit{position:absolute;top:10px;right:12px;border:none;background:none;font-size:1.2rem;color:var(--grey);cursor:pointer}
+  #explainHint{position:fixed;left:50%;transform:translateX(-50%);bottom:26px;background:var(--navy);color:#fff;
+    font-size:.82rem;padding:8px 18px;border-radius:99px;z-index:999;display:none;box-shadow:0 4px 14px rgba(20,30,70,.3)}
+  body.uitleg-modus #explainHint{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <span class="badge">VERSIE 2 · OVERZICHT</span>
+    <h1>Project Pulse — Samenhang tussen informele &amp; formele zorg</h1>
+    <p>System Mapping Toolkit, fase 1–5 · Karabijn × Studio Laura Koenen · jong &amp; oud als gelijkwaardige actoren (generatiemix) · Rotterdam · juni 2026</p>
+  </header>
+
+  <!-- FASE 1 -->
+  <h2><span class="num">1</span>Kader het systeem</h2>
+  <div class="grid c2">
+    <div class="card accent">
+      <div class="kicker">Het systeem &amp; kernprobleem</div>
+      <p><strong>Het systeem:</strong> de samenhang (afstemming, complementariteit en overdracht) tussen <strong>informele zorg</strong> (intergenerationele &amp; peer-steun, familie, gemeenschap, vrijwilligers, eigenaarschap) en <strong>formele zorg</strong> (professionele ouderenzorg, jongerenwerk, instellingen, gemeente) in Rotterdam.</p>
+      <p style="margin-top:8px"><strong>Kernprobleem:</strong> informele en formele zorg zijn slecht verbonden en versterken elkaar niet — de kracht van intergenerationele steun blijft onbenut terwijl de druk op de formele zorg stijgt. Jongeren én ouderen zijn eenzaam; generaties leven langs elkaar heen; professionals missen ruimte voor echt contact.</p>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Onderzoeksvraag</div>
+      <p><strong>Hoofdvraag:</strong> Welke factoren beïnvloeden de samenhang tussen informele en formele zorg voor jong en oud — en hoe kan het versterken daarvan via intergenerationele verbinding eenzaamheid verminderen, mentale veerkracht opbouwen en de druk op de formele zorg verlichten?</p>
+      <div class="kicker" style="margin-top:12px">Doelen van de kaart</div>
+      <ul>
+        <li><strong>Begrijp het samenspel</strong> — feedbackloops achter eenzaamheid, steun en zorgdruk.</li>
+        <li><strong>Bouw gedeeld begrip</strong> — één beeld voor jongeren, ouderen, professionals en coalitie.</li>
+        <li><strong>Vind hefbomen</strong> — waar informele zorg de formele zorg het best aanvult.</li>
+      </ul>
+      <div class="kicker" style="margin-top:12px">Grenzen</div>
+      <p><strong>Binnen focus:</strong> sociaal (jong↔oud, eenzaamheid, vertrouwen), methode (co-creatie), capaciteit (werkdruk, vrijwilligers), governance (beleid, overdracht), plekken in Rotterdam. <strong>Buiten focus (voorlopig):</strong> medische trajecten, landelijke financiering, andere steden, alleen-digitale kanalen.</p>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <h2><span class="num">2</span>Verken het systeem</h2>
+  <div class="card accent" style="margin-bottom:14px">
+    <div class="kicker">Hoofdvariabele</div>
+    <p><strong>Samenhang tussen informele &amp; formele zorg</strong> — de mate waarin beide elkaar versterken en aanvullen in plaats van elkaar te verdringen, via vertrouwen, gedeelde afspraken en warme overdracht. Dit is de hefboom die Pulse wil vergroten via de generatiemix.</p>
+  </div>
+  <div class="grid c3">
+    <div class="card"><span class="tag" style="background:var(--pink)">Eenzaamheid &amp; Mentaal Welzijn</span>
+      <p>Eenzaamheid (jong / oud) · mentale stress &amp; prestatiedruk · veerkracht · kwaliteit van leven · eigenwaarde &amp; zelfinzicht</p></div>
+    <div class="card"><span class="tag" style="background:var(--green)">Verbinding &amp; Intergenerationeel Contact</span>
+      <p>Betekenisvolle ontmoetingen · wederzijdse steun jong↔oud · kwaliteit van relaties · verbondenheid · sociale cohesie · empathie · afstand tussen generaties</p></div>
+    <div class="card"><span class="tag" style="background:var(--yellow)">Eigenaarschap, Regie &amp; Creatief Zelfvertrouwen</span>
+      <p>Eigenaarschap · eigen regie · creatief zelfvertrouwen · deelname aan co-creatie · motivatie · vertrouwen tussen deelnemers</p></div>
+    <div class="card"><span class="tag" style="background:var(--blue)">Capaciteit &amp; Druk Formele Zorg</span>
+      <p>Druk op formele zorg · werkdruk &amp; emotionele belasting · ruimte voor echt contact · afhankelijkheid van professionele zorg · institutionele regels</p></div>
+    <div class="card"><span class="tag" style="background:#c3faf5">Informele Zorg &amp; Kracht van de Gemeenschap</span>
+      <p>Vrijwilligers-/peer-capaciteit · sociaal weefsel · familie &amp; buren · verbinding informeel initiatief ↔ zorgsetting · afstand zorg ↔ gemeenschap</p></div>
+    <div class="card"><span class="tag" style="background:var(--purple)">Governance, Methode &amp; Middelen</span>
+      <p>Creatieve methoden · continuïteit van labs · gedeelde visie · coalitiesamenwerking · beleid &amp; gemeente · (co)financiering · sectoroverstijgend · overdracht naar zelfvoorzienend programma</p></div>
+  </div>
+  <p class="legend">37 variabelen uit het Pulse-onderzoek (projectplan, Pulse 12 Maa, deelvragen 1–4), gegroepeerd in 6 clusters.</p>
+
+  <!-- FASE 3 -->
+  <h2><span class="num">3</span>Breng het systeem in kaart — de systeemkaart</h2>
+  <div class="card" style="padding:24px">
+    <svg viewBox="0 0 1100 600" width="100%" role="img" aria-label="Vereenvoudigde systeemkaart Pulse">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#555"/>
+        </marker>
+      </defs>
+
+      <!-- verbindingen -->
+      <!-- Governance -> Eigenaarschap + -->
+      <path d="M255,495 L335,485" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+      <text x="288" y="478" font-size="15" fill="#0a7a36" font-weight="bold">+</text>
+      <!-- Eigenaarschap -> Verbinding + (motivatie -> ontmoetingen) -->
+      <path d="M430,420 C430,330 430,290 440,245" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+      <text x="438" y="330" font-size="15" fill="#0a7a36" font-weight="bold">+</text>
+      <!-- Verbinding -> Eigenaarschap + (verbondenheid -> motivatie, R1) -->
+      <path d="M510,235 C540,320 540,360 500,425" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+      <text x="546" y="330" font-size="14" fill="#0a7a36" font-weight="bold">+ R1</text>
+      <!-- Verbinding -> Eenzaamheid − (B1) -->
+      <path d="M600,165 L688,140" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#arr)"/>
+      <text x="618" y="138" font-size="14" fill="#c0392b" font-weight="bold">− B1</text>
+      <!-- Eenzaamheid -> Eigenaarschap/motivatie + (B1 sluit) -->
+      <path d="M700,185 C600,300 540,380 505,440" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+      <text x="592" y="295" font-size="14" fill="#0a7a36" font-weight="bold">+ B1</text>
+      <!-- Eenzaamheid -> Veerkracht − -->
+      <path d="M845,115 L920,115" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#arr)"/>
+      <text x="872" y="105" font-size="15" fill="#c0392b" font-weight="bold">−</text>
+      <!-- Verbinding -> SAMENHANG + -->
+      <path d="M560,225 C600,280 620,300 640,320" stroke="#555" stroke-width="2.5" fill="none" marker-end="url(#arr)"/>
+      <text x="612" y="282" font-size="15" fill="#0a7a36" font-weight="bold">+</text>
+      <!-- SAMENHANG -> Formeel − (R3: afhankelijkheid daalt) -->
+      <path d="M790,355 L865,395" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#arr)"/>
+      <text x="800" y="372" font-size="14" fill="#c0392b" font-weight="bold">− R3</text>
+      <!-- Formeel -> SAMENHANG + vertraagd (ruimte echt contact) -->
+      <path d="M880,455 C800,460 740,420 705,385" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+      <text x="742" y="455" font-size="14" fill="#0a7a36" font-weight="bold">+ R3 ‖</text>
+      <!-- Eigenaarschap -> Formeel + (B2: regels) -->
+      <path d="M530,510 C660,560 780,545 860,505" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+      <text x="668" y="568" font-size="14" fill="#0a7a36" font-weight="bold">+ B2</text>
+      <!-- Formeel -> Eigenaarschap − (B2 sluit: regels dempen eigenaarschap) -->
+      <path d="M860,470 C740,480 620,475 535,475" stroke="#c0392b" stroke-width="2" stroke-dasharray="6 5" fill="none" marker-end="url(#arr)"/>
+      <text x="688" y="462" font-size="14" fill="#c0392b" font-weight="bold">− B2</text>
+      <!-- R2 zelfversterkende lus binnen eigenaarschap -->
+      <path d="M375,425 C345,385 405,365 440,400" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+      <text x="368" y="368" font-size="14" fill="#0a7a36" font-weight="bold">R2 ↻ +</text>
+
+      <!-- regio's -->
+      <g>
+        <ellipse cx="150" cy="500" rx="115" ry="78" fill="#dedaff" stroke="#8a7bd8" stroke-width="2"/>
+        <text x="150" y="478" text-anchor="middle" font-size="14" font-weight="bold" fill="#3c2f80">Governance &amp;</text>
+        <text x="150" y="496" text-anchor="middle" font-size="14" font-weight="bold" fill="#3c2f80">Methode</text>
+        <text x="150" y="518" text-anchor="middle" font-size="11" fill="#3c2f80">beleid · coalitie · creatieve</text>
+        <text x="150" y="532" text-anchor="middle" font-size="11" fill="#3c2f80">methoden &amp; labs</text>
+      </g>
+      <g>
+        <ellipse cx="435" cy="480" rx="120" ry="80" fill="#fff6b6" stroke="#d4af2f" stroke-width="2"/>
+        <text x="435" y="455" text-anchor="middle" font-size="14" font-weight="bold" fill="#6b5500">Eigenaarschap &amp;</text>
+        <text x="435" y="473" text-anchor="middle" font-size="14" font-weight="bold" fill="#6b5500">Creatief Zelfvertrouwen</text>
+        <text x="435" y="495" text-anchor="middle" font-size="11" fill="#6b5500">deelname · zelfvertrouwen ·</text>
+        <text x="435" y="509" text-anchor="middle" font-size="11" fill="#6b5500">eigenaarschap · motivatie</text>
+      </g>
+      <g>
+        <ellipse cx="460" cy="160" rx="150" ry="82" fill="#adf0c7" stroke="#2e9e5b" stroke-width="2"/>
+        <text x="460" y="130" text-anchor="middle" font-size="14" font-weight="bold" fill="#0a5c2c">Verbinding &amp;</text>
+        <text x="460" y="148" text-anchor="middle" font-size="14" font-weight="bold" fill="#0a5c2c">Intergenerationeel Contact</text>
+        <text x="460" y="170" text-anchor="middle" font-size="11" fill="#0a5c2c">ontmoetingen · relaties ·</text>
+        <text x="460" y="184" text-anchor="middle" font-size="11" fill="#0a5c2c">wederzijdse steun jong↔oud · verbondenheid</text>
+      </g>
+      <g>
+        <ellipse cx="770" cy="125" rx="85" ry="62" fill="#ffc6c6" stroke="#d1564a" stroke-width="2"/>
+        <text x="770" y="118" text-anchor="middle" font-size="14" font-weight="bold" fill="#7c1f16">Eenzaamheid</text>
+        <text x="770" y="136" text-anchor="middle" font-size="11" fill="#7c1f16">jong &amp; oud</text>
+      </g>
+      <g>
+        <ellipse cx="990" cy="120" rx="72" ry="52" fill="#ffe3e3" stroke="#d1564a" stroke-width="2" stroke-dasharray="4 4"/>
+        <text x="990" y="113" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#7c1f16">Veerkracht</text>
+        <text x="990" y="130" text-anchor="middle" font-size="11" fill="#7c1f16">&amp; welzijn</text>
+      </g>
+      <g>
+        <ellipse cx="945" cy="460" rx="120" ry="80" fill="#c6dcff" stroke="#3e6bb5" stroke-width="2"/>
+        <text x="945" y="432" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d3a6e">Formeel</text>
+        <text x="945" y="450" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d3a6e">Zorgsysteem</text>
+        <text x="945" y="472" text-anchor="middle" font-size="11" fill="#1d3a6e">afhankelijkheid · druk · werkdruk ·</text>
+        <text x="945" y="486" text-anchor="middle" font-size="11" fill="#1d3a6e">ruimte voor echt contact · regels</text>
+      </g>
+      <!-- hoofdvariabele -->
+      <g>
+        <ellipse cx="685" cy="350" rx="110" ry="48" fill="#f8d3af" stroke="#c46a1d" stroke-width="3"/>
+        <text x="685" y="343" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#7a3c05">SAMENHANG</text>
+        <text x="685" y="360" text-anchor="middle" font-size="11" fill="#7a3c05">informele &amp; formele zorg</text>
+      </g>
+    </svg>
+    <p class="legend"><strong>Legenda:</strong> doorgetrokken lijn = effect in dezelfde richting (+) · gestippelde lijn = tegengesteld effect (−) · ‖ = vertraging · <span class="loopR">R</span> = versterkende loop · <span class="loopB">B</span> = balancerende loop. De volledige kaart met alle 19 variabelen staat op het Miro-bord ("Versie 2 · Systeemkaart — Pulse").</p>
+  </div>
+
+  <h2 style="font-size:1.05rem"><span class="num" style="font-size:.8rem">⟲</span>Loopregister</h2>
+  <table>
+    <tr><th style="width:60px">Loop</th><th style="width:120px">Type</th><th style="width:200px">Naam</th><th>Waar het toe leidt</th></tr>
+    <tr><td class="loopR">R1</td><td>Versterkend</td><td><strong>Verbindingsvliegwiel</strong></td><td>Ontmoetingen → relaties → wederzijdse steun → verbondenheid → motivatie → meer ontmoetingen</td></tr>
+    <tr><td class="loopR">R2</td><td>Versterkend</td><td><strong>Eigenaarschapsmotor</strong></td><td>Deelname → creatief zelfvertrouwen → eigenaarschap → motivatie → meer deelname</td></tr>
+    <tr><td class="loopR">R3</td><td>Versterkend</td><td><strong>Zorgverlichtingsdividend</strong></td><td>Samenhang ↓afhankelijkheid ↓druk ↓werkdruk ↑ruimte voor echt contact → samenhang (vicieus in omgekeerde richting; vertraagd)</td></tr>
+    <tr><td class="loopB">B1</td><td>Balancerend</td><td><strong>Eenzaamheidsverlichting</strong></td><td>Eenzaamheid → motivatie om te verbinden → ontmoetingen → minder eenzaamheid</td></tr>
+    <tr><td class="loopB">B2</td><td>Balancerend</td><td><strong>Verdringingsrem</strong></td><td>Eigenaarschap → institutionele regels → minder eigenaarschap</td></tr>
+  </table>
+
+  <!-- FASE 4 -->
+  <h2><span class="num">4</span>Reflecteer op je kaart</h2>
+  <div class="grid c2">
+    <div class="card accent">
+      <div class="kicker">Belangrijkste inzichten</div>
+      <ul>
+        <li><strong>Verbinding versterkt zichzelf</strong> (R1) — eenmaal gestart bouwt het zijn eigen momentum op.</li>
+        <li><strong>Samenhang moet ontworpen worden</strong> — zonder ontwerp verdringt formele zorg het informele initiatief (B2).</li>
+        <li><strong>De opbrengst is vertraagd</strong> — het systemische dividend (R3) ijlt na; kortetermijnmetingen onderschatten de impact.</li>
+        <li><strong>Eenzaamheid is oorzaak én gevolg</strong> — drijft het zoeken naar verbinding (B1) maar tast veerkracht aan.</li>
+        <li><strong>Eigenaarschap is het scharnierpunt</strong> — verbindt R2 met informele zorg; precies waar regels kunnen smoren (B2).</li>
+        <li><strong>Ruimte voor echt contact is verborgen hefboom</strong> — werkdruk holt uit wat samenhang nodig heeft.</li>
+        <li><strong>Wederzijdsheid is echt</strong> — wederzijdse steun vermindert eenzaamheid bij béide generaties.</li>
+        <li><strong>Creatief zelfvertrouwen komt eerst</strong> — zonder dit komen deelname en eigenaarschap niet op gang.</li>
+      </ul>
+      <p style="margin-top:8px"><em>Dominante probleemloops: R3 in omgekeerde richting + B2. Kernvariabelen: samenhang, eigenaarschap, ruimte voor echt contact, wederzijdse steun, eenzaamheid, druk op formele zorg.</em></p>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Kernsysteemverhaal</div>
+      <p>De formele zorg in Rotterdam loopt vast terwijl jong en oud steeds eenzamer zijn en langs elkaar heen leven. Door werkdruk missen professionals ruimte voor echt contact: zorg blijft transactioneel ("veel zorg, weinig leven"), afhankelijkheid blijft hoog en de kracht van intergenerationele steun blijft onbenut.</p>
+      <p style="margin-top:8px">Pulse ontwerpt de samenhang bewust: co-creatieve methoden bouwen creatief zelfvertrouwen en eigenaarschap op en ontsteken jong↔oud-ontmoetingen en wederzijdse steun. Eenzaamheid daalt, veerkracht stijgt; informele zorg sluit aan op professionals, afhankelijkheid en druk nemen af — en de ruimte voor echt contact komt terug, wat de samenhang verder verdiept.</p>
+      <div class="kicker" style="margin-top:12px">Belangrijkste aannames (te valideren)</div>
+      <ul>
+        <li>Jong &amp; oud willen elkaar steunen (Berts scepsis markeert het risico).</li>
+        <li>Informele zorg ontlast i.p.v. extra coördinatiewerk toe te voegen.</li>
+        <li>Minder eenzaamheid → minder professionele afhankelijkheid (vertraagd).</li>
+        <li>Eigenaarschap blijft bestaan na de overdracht door de coalitie.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FASE 5 -->
+  <h2><span class="num">5</span>Vind hefboompunten</h2>
+  <div class="grid c2">
+    <div class="card accent">
+      <div class="kicker">Systeemvisie</div>
+      <p>Een Rotterdam waar jong en oud elkaar vanzelfsprekend zien en steunen. Informele en professionele zorg werken als één geheel: professionals hebben ruimte voor echt contact, steun is sterk en in handen van de deelnemers, en mensen zijn minder afhankelijk van formele zorg. Eenzaamheid laag, veerkracht hoog — het programma houdt zichzelf in stand via gedeeld eigenaarschap.</p>
+      <div class="kicker" style="margin-top:12px">Zes hefboompunten</div>
+      <div class="pillrow">
+        <span class="tag" style="background:var(--orange)">1 · Bescherm &amp; laat eigenaarschap groeien</span>
+        <span class="tag" style="background:var(--orange)">2 · Warme overdracht formeel ↔ informeel</span>
+        <span class="tag" style="background:var(--orange)">3 · Veranker creatieve methoden in zorgwerk</span>
+        <span class="tag" style="background:var(--orange)">4 · Win ruimte voor echt contact terug</span>
+        <span class="tag" style="background:var(--orange)">5 · Maak ontmoetingen routine &amp; laagdrempelig</span>
+        <span class="tag" style="background:var(--orange)">6 · Co-creëer huisregels met deelnemers</span>
+      </div>
+    </div>
+    <div class="card accent">
+      <div class="kicker">Beoordeling: impact × haalbaarheid</div>
+      <div class="matrix">
+        <div class="cell hi-lo"><b>Hoge impact · lage haalbaarheid</b>Ruimte voor echt contact terugwinnen (bevroren werkdruk) — werk eromheen.</div>
+        <div class="cell hi-hi"><b>Hoge impact · hoge haalbaarheid ★</b>Bescherm &amp; laat eigenaarschap groeien · Warme overdracht · Veranker creatieve methoden.</div>
+        <div class="cell lo-lo"><b>Lagere impact · lagere haalbaarheid</b>—</div>
+        <div class="cell lo-hi"><b>Quick wins</b>Ontmoetingen als routine · Co-gecreëerde huisregels — ondersteunen de grotere hefbomen.</div>
+      </div>
+      <div class="kicker" style="margin-top:14px">Hefboomhypothese</div>
+      <p><strong>Bescherm &amp; laat eigenaarschap groeien:</strong> maak deelnemers mede-makers; beslissingsrecht blijft bij jong en oud. <strong>Korte termijn:</strong> meer zelfvertrouwen, motivatie en deelname — R2 begint te draaien. <strong>Lange termijn:</strong> eigenaarschap voedt wederzijdse steun en samenhang (R1/R3), verlicht de formele zorg en maakt het programma zelfvoorzienend (B2 onschadelijk). <strong>Hoe kunnen we…</strong> beslissingsrecht behouden bij opschaling? · huisregels co-creëren die eigenaarschap beschermen? · professionals laten ondersteunen zonder over te nemen?</p>
+    </div>
+  </div>
+
+  <footer>
+    System Mapping Toolkit · Versie 2 · Project Pulse (Karabijn × Studio Laura Koenen) · lens: samenhang tussen informele &amp; formele zorg · jong en oud als gelijkwaardige actoren.
+    Volledige uitwerking op het Miro-bord <a href="https://miro.com/app/board/uXjVHJonSbQ=/">System Mapping Toolkit</a> (frames "Versie 2 · 1–5" en "Versie 2 · Systeemkaart — Pulse").
+    Template: System Mapping Academy (CC BY-SA 4.0). Bronnen: Project Pulse 12 Maa, projectplan, onderzoeksdocumenten deelvragen 1–4.
+  </footer>
+</div>
+
+<button id="explainBtn" title="Zet uitleg-modus aan/uit">💡 Onderbouwing</button>
+<div id="explainHint">Uitleg-modus aan — klik op een omkaderd tekstdeel voor bron, onderbouwing en bijdrage</div>
+<div id="explainPanel">
+  <button class="sluit" aria-label="Sluiten">✕</button>
+  <h4 id="epTitel"></h4>
+  <div class="sec"><b>Waar komt dit vandaan?</b><p id="epBron"></p></div>
+  <div class="sec"><b>Onderbouwing</b><p id="epOnderbouwing"></p></div>
+  <div class="sec"><b>Hoe draagt dit bij?</b><p id="epBijdrage"></p></div>
+</div>
+
+<script>
+(function(){
+  const uitleg = {
+    "het systeem & kernprobleem": {
+      titel:"Fase 1 · Het systeem & kernprobleem",
+      bron:"Projectplan Pulse en 'Project Pulse 12 Maa': de probleemschets ('de formele zorg loopt vast', 'veel zorg, weinig leven'), de generatiemix als kernprincipe en de persona's Kelly (19), Bert (84) en Anne (40). Aangevuld met onderzoeksdocumenten deelvraag 1–2 over eenzaamheid bij jongeren en ouderen.",
+      onderbouwing:"De systeemkeuze volgt stap 1.1 van de toolkit: niet één doelgroep, maar de relatie tussen informele en formele zorg is als systeem gekozen, omdat de Pulse-documenten het probleem steeds als verbindingsprobleem beschrijven — generaties én zorgvormen leven langs elkaar heen.",
+      bijdrage:"Dit kader bepaalt de grens van de hele kaart: alle 37 variabelen, loops en hefbomen in fase 2–5 zijn binnen deze afbakening gekozen. Zonder scherp kernprobleem zou de kaart uitwaaieren naar alles wat met zorg te maken heeft."
+    },
+    "onderzoeksvraag": {
+      titel:"Fase 1 · Onderzoeksvraag, doelen & grenzen",
+      bron:"De hoofdvraag is afgeleid van de programmavraag uit het projectplan ('Hoe kunnen we… eenzaamheid vermindert, mentale veerkracht versterkt en de druk op de formele zorg verlicht?'), geherformuleerd volgens het toolkit-stramien 'Welke factoren beïnvloeden…'. Grenzen volgen de vijf perspectieven (sociaal, technologisch, economisch, politiek, omgeving) uit stap 1.4.",
+      onderbouwing:"De toolkit vraagt een vraag die causaal te onderzoeken is. Daarom is de programmavraag (een ontwerpvraag) vertaald naar een factorenvraag over de hoofdvariabele 'samenhang'. De buiten-focus-lijst (medische trajecten, landelijke financiering) houdt de kaart behapbaar.",
+      bijdrage:"De vraag stuurt fase 2 (welke variabelen verzamelen we?) en fase 5 (hefbomen moeten antwoord geven op déze vraag). De doelen maken de kaart bruikbaar als gespreks- en validatie-instrument voor de coalitie (Theory of Change)."
+    },
+    "hoofdvariabele": {
+      titel:"Fase 2 · Hoofdvariabele",
+      bron:"Direct afgeleid uit de onderzoeksvraag (fase 1) en het projectplan, waarin Pulse expliciet de verbinding tussen informele steun en professionele zorg wil versterken via de generatiemix.",
+      onderbouwing:"Volgens stap 2.1 moet de hoofdvariabele het kernprobleem samenvatten én beïnvloedbaar zijn. 'Samenhang' is gekozen boven bijv. 'eenzaamheid', omdat eenzaamheid een gevolg is — de slecht verbonden zorgvormen zijn de motor van het probleem.",
+      bijdrage:"De hoofdvariabele is het startpunt en middelpunt van de systeemkaart (fase 3): alle clusters zijn er terugwerkend aan verbonden, en loop R3 (Zorgverlichtingsdividend) draait er letterlijk omheen."
+    },
+    "eenzaamheid & mentaal welzijn": {
+      titel:"Cluster · Eenzaamheid & Mentaal Welzijn",
+      bron:"Onderzoeksdocumenten deelvraag 1–2 (eenzaamheid en mentale druk bij jongeren; structurele eenzaamheid bij ouderen) en de persona's Kelly ('prestatiedruk, eenzaamheid') en Bert ('veel zorg, weinig leven').",
+      onderbouwing:"Dit cluster bundelt de gevoelde problemen — de variabelen waarop Pulse uiteindelijk effect wil zien. Ze zijn als aparte variabelen voor jong en oud opgenomen, omdat beide generaties gelijkwaardige actoren zijn.",
+      bijdrage:"Vormt de regio 'Eenzaamheid & Welzijn' op de kaart en het hart van balansloop B1: eenzaamheid drijft het zoeken naar verbinding, en wederzijdse steun vermindert eenzaamheid."
+    },
+    "verbinding & intergenerationeel contact": {
+      titel:"Cluster · Verbinding & Intergenerationeel Contact",
+      bron:"Projectplan (generatiemix, wederkerigheid: 'niet helper en geholpene') en deelvraag 3 over wat intergenerationeel contact betekenisvol maakt.",
+      onderbouwing:"De variabelen beschrijven het mechanisme waarmee Pulse werkt: ontmoetingen → relaties → wederzijdse steun → verbondenheid. 'Wederzijdse steun jong↔oud' is bewust wederkerig geformuleerd.",
+      bijdrage:"Vormt de motor van versterkende loop R1 (Verbindingsvliegwiel) en is de belangrijkste bron van informele zorg die de hoofdvariabele 'samenhang' verhoogt."
+    },
+    "eigenaarschap, regie & creatief zelfvertrouwen": {
+      titel:"Cluster · Eigenaarschap, Regie & Creatief Zelfvertrouwen",
+      bron:"Projectplan en 'Pulse 12 Maa': de ontwerpgerichte, co-creatieve aanpak en het doel deelnemers eigenaar te maken (eigenaarschap, regie, creative confidence).",
+      onderbouwing:"Deze variabelen verklaren wáárom de creatieve methode werkt: deelname bouwt zelfvertrouwen, zelfvertrouwen bouwt eigenaarschap, eigenaarschap voedt motivatie. Dit is de eigen theory-of-change van Pulse, vertaald naar variabelen.",
+      bijdrage:"Vormt versterkende loop R2 (Eigenaarschapsmotor) en is het scharnierpunt van de kaart: hier grijpt het belangrijkste hefboompunt (fase 5) aan, en hier remt B2 als regels gaan overheersen."
+    },
+    "capaciteit & druk formele zorg": {
+      titel:"Cluster · Capaciteit & Druk Formele Zorg",
+      bron:"Probleemschets in het projectplan ('de formele zorg loopt vast') en persona Anne (40, zorgprofessional): werkdruk, emotionele belasting en het verlangen naar echt contact in plaats van 'autopilot'.",
+      onderbouwing:"De keten druk → werkdruk → minder ruimte voor echt contact is rechtstreeks uit Annes verhaal en de probleemanalyse afgeleid. 'Ruimte voor echt contact' is als aparte variabele opgenomen omdat het de schakel is waar formele zorg op informele zorg kan aansluiten.",
+      bijdrage:"Vormt de regio 'Formeel Zorgsysteem' en de rechterhelft van loop R3: als samenhang groeit, dalen afhankelijkheid en druk — met vertraging — en ontstaat er weer ruimte voor contact."
+    },
+    "informele zorg & kracht van de gemeenschap": {
+      titel:"Cluster · Informele Zorg & Kracht van de Gemeenschap",
+      bron:"Deelvraag 4 (sociale netwerken, vrijwilligers, buurtbetrokkenheid) en de projectambitie om steun terug te brengen naar de gemeenschap.",
+      onderbouwing:"Deze variabelen beschrijven de capaciteitskant van informele zorg: hoe sterk is het sociale weefsel dat de wederzijdse steun moet dragen, en hoe goed is het verbonden met de zorgsetting?",
+      bijdrage:"Levert de brug tussen de regio's Verbinding en Formeel Zorgsysteem: 'verbinding informeel initiatief ↔ zorgsetting' is in fase 5 vertaald naar het hefboompunt 'warme overdracht'."
+    },
+    "governance, methode & middelen": {
+      titel:"Cluster · Governance, Methode & Middelen",
+      bron:"Projectplan: de coalitie (Karabijn, Studio Laura Koenen, Laurens, Rotterdamse Douwers, gemeente), de cofinanciering, de labs-aanpak en het einddoel van overdracht naar een zelfvoorzienend programma.",
+      onderbouwing:"Deze randvoorwaarden zijn als apart cluster opgenomen omdat ze het systeem niet 'zijn' maar het wel aanjagen: zonder methoden, coalitie en geld start geen enkele loop.",
+      bijdrage:"Vormt de regio 'Governance & Methode' — de machinekamer van de kaart. Het is het startpunt van de causale keten richting deelname (R2) en daarmee van alle versterkende loops."
+    },
+    "systeemkaart": {
+      titel:"Fase 3 · De systeemkaart",
+      bron:"Opgebouwd volgens stap 3.1–3.4 van de toolkit: hoofdvariabele centraal, daarna cluster voor cluster terugwerkend verbonden, polariteiten (+/−) en vertragingen toegevoegd, loops benoemd en regio's gemarkeerd. De relaties zelf komen uit de Pulse-documenten en deelvragen 1–4.",
+      onderbouwing:"Elke pijl is een causale claim uit het onderzoek (bijv. werkdruk − ruimte voor echt contact, uit Annes persona; wederzijdse steun − eenzaamheid, uit deelvraag 1–3). De vereenvoudigde weergave hier toont de regio's en loops; de volledige kaart met 19 variabelen staat op het Miro-bord.",
+      bijdrage:"Dit is de kern van de hele methode: de kaart maakt zichtbaar dat het gedrag van het systeem wordt gedreven door vijf feedbackloops — en dus waar ingrijpen wel en niet zin heeft (fase 4 en 5)."
+    },
+    "loopregister": {
+      titel:"Loopregister · R1–R3, B1–B2",
+      bron:"Stap 3.3 van de toolkit ('Find feedback'): loops zijn op de kaart gevonden door gesloten ketens van pijlen te traceren, getypeerd (versterkend/balancerend) en benoemd.",
+      onderbouwing:"Een loop is versterkend (R) bij een even aantal minnen in de keten en balancerend (B) bij een oneven aantal. R3 is bijzonder: hij werkt nu vicieus (overbelasting houdt zichzelf in stand) maar draait virtuoos zodra samenhang groeit — met vertraging.",
+      bijdrage:"De loops verklaren het systeemgedrag compacter dan losse variabelen: R1+R2 zijn de motoren die Pulse wil aanzetten, B2 is de rem die het moet ontwijken, R3 is het uiteindelijke dividend."
+    },
+    "belangrijkste inzichten": {
+      titel:"Fase 4 · Inzichten",
+      bron:"Stap 4.1 van de toolkit: reflectie op de afgeronde kaart. Elk inzicht verwijst naar een loop of variabele op de kaart (R1, R2, R3, B1, B2) en is te herleiden tot de onderliggende Pulse-bronnen.",
+      onderbouwing:"De inzichten zijn afgeleid door per loop te vragen: wat betekent dit voor het programma? Bijv. de vertraging in R3 betekent dat het effect op zorgdruk pas laat zichtbaar wordt — een direct gevolg van de kaartstructuur, geen aanname vooraf.",
+      bijdrage:"Ze vormen de brug van kaart naar actie: de dominante probleemloops (R3 omgekeerd + B2) wijzen rechtstreeks naar de hefboompunten van fase 5 en naar wat er in interviews gevalideerd moet worden."
+    },
+    "kernsysteemverhaal": {
+      titel:"Fase 4 · Kernsysteemverhaal & aannames",
+      bron:"Stap 4.3–4.4: het verhaal synthetiseert de kaart in lopende tekst; de aannames markeren de zwakste causale claims. Berts uitspraak ('wat moet zo'n jong iemand nou met mij?') komt uit de persona's in Pulse 12 Maa.",
+      onderbouwing:"Het verhaal volgt bewust de loopvolgorde: eerst het vicieuze heden (R3 omgekeerd), dan de interventie (R2→R1), dan het dividend (R3 virtuoos). Aannames zijn die pijlen waarvoor het onderzoek nog geen hard bewijs levert.",
+      bijdrage:"Dit is het communicatie-instrument van de kaart: hiermee toets je het model bij experts en stakeholders (Meadows: 'get your model out there'). De aannames vormen de agenda voor de validatie-interviews."
+    },
+    "systeemvisie": {
+      titel:"Fase 5 · Visie & hefboompunten",
+      bron:"Stap 5.1–5.3: de visie spiegelt het kernprobleem (verbonden i.p.v. gescheiden zorg) en de hefboompunten zijn gevonden door de kaart te analyseren op rimpeleffecten, bevroren gebieden, veranderpotentieel en positieve verandering die al gaande is.",
+      onderbouwing:"Elk hefboompunt grijpt aan op een loop: eigenaarschap (R2/B2), warme overdracht (R3), creatieve methoden (motor van R2), echt contact (R3), routine-ontmoetingen (R1), huisregels (B2). Punten die alleen een symptoom raken zijn weggelaten.",
+      bijdrage:"Dit beantwoordt de onderzoeksvraag: hier kan Pulse met kleine ingrepen het hele systeem kantelen. Het geeft de coalitie een geprioriteerde agenda in plaats van een losse ideeënlijst."
+    },
+    "beoordeling: impact × haalbaarheid": {
+      titel:"Fase 5 · Beoordeling & hefboomhypothese",
+      bron:"Stap 5.4–5.5: elk hefboompunt is gescoord op impact (hoeveel loops raakt het?) en haalbaarheid (ligt het binnen de invloed van Pulse?). De hypothese volgt het toolkit-sjabloon: naam, korte/lange termijn, 'hoe kunnen we…'.",
+      onderbouwing:"'Eigenaarschap' scoort het hoogst omdat het twee loops tegelijk raakt (R2 aanjagen, B2 ontwapenen) én volledig binnen Pulse's eigen invloedssfeer ligt — in tegenstelling tot werkdruk, die door externe structuren bevroren is.",
+      bijdrage:"De hypothese maakt het hefboompunt toetsbaar: de kortetermijneffecten (zelfvertrouwen, deelname) zijn al in de eerste labs meetbaar, lang voordat het vertraagde zorgdruk-effect (R3) zichtbaar wordt."
+    }
+  };
+
+  function normaliseer(t){return (t||"").replace(/\s+/g," ").trim().toLowerCase();}
+
+  // koppel uitleg aan secties via kicker-/tag-tekst
+  document.querySelectorAll(".card").forEach(card=>{
+    const k = card.querySelector(".kicker, .tag");
+    let sleutel = k ? normaliseer(k.textContent) : null;
+    if(card.querySelector("svg")) sleutel = "systeemkaart";
+    if(sleutel && uitleg[sleutel]){ card.dataset.uitleg = sleutel; }
+  });
+  const tabel = document.querySelector("table");
+  if(tabel) tabel.dataset.uitleg = "loopregister";
+
+  const btn = document.getElementById("explainBtn");
+  const panel = document.getElementById("explainPanel");
+  const secties = document.querySelectorAll("[data-uitleg]");
+  let aan = false;
+
+  btn.addEventListener("click", ()=>{
+    aan = !aan;
+    document.body.classList.toggle("uitleg-modus", aan);
+    btn.classList.toggle("actief", aan);
+    btn.innerHTML = aan ? "✕ Uitleg-modus sluiten" : "💡 Onderbouwing";
+    secties.forEach(s=>s.classList.toggle("explainable", aan));
+    if(!aan) panel.classList.remove("open");
+  });
+
+  secties.forEach(s=>{
+    s.addEventListener("click", e=>{
+      if(!aan) return;
+      e.preventDefault();
+      const d = uitleg[s.dataset.uitleg];
+      if(!d) return;
+      document.getElementById("epTitel").textContent = d.titel;
+      document.getElementById("epBron").textContent = d.bron;
+      document.getElementById("epOnderbouwing").textContent = d.onderbouwing;
+      document.getElementById("epBijdrage").textContent = d.bijdrage;
+      panel.classList.add("open");
+    });
+  });
+
+  panel.querySelector(".sluit").addEventListener("click", ()=>panel.classList.remove("open"));
+})();
+</script>
+</body>
+</html>
